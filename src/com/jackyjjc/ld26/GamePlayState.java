@@ -1,13 +1,17 @@
 package com.jackyjjc.ld26;
 
 import org.newdawn.slick.*;
+import org.newdawn.slick.state.BasicGameState;
+import org.newdawn.slick.state.StateBasedGame;
 
 import java.util.List;
 
 /**
  * @author Junjie CHEN(jacky.jjchen@gmail.com)
  */
-public class LDGame extends BasicGame {
+public class GamePlayState extends BasicGameState {
+
+    private int id;
 
     private static final int NUM_PLAYERS = 2;
 
@@ -15,13 +19,17 @@ public class LDGame extends BasicGame {
     private GameController logic;
     private Player[] players;
 
-    public LDGame() {
-        super("#LD26 Game - Place Holder");
+    public GamePlayState(int id) {
+        this.id = id;
     }
 
     @Override
-    public void init(GameContainer gameContainer) throws SlickException {
+    public int getID() {
+        return id;
+    }
 
+    @Override
+    public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         players = new Player[NUM_PLAYERS];
         players[0] = new Player(GameColor.fromRGB(Color.magenta));
         players[1] = new Player(GameColor.fromRGB(Color.cyan));
@@ -33,16 +41,7 @@ public class LDGame extends BasicGame {
     }
 
     @Override
-    public void update(GameContainer gameContainer, int i) throws SlickException {
-
-        int mouseX = gameContainer.getInput().getMouseX();
-        int mouseY = gameContainer.getInput().getMouseY();
-
-    }
-
-    @Override
-    public void render(GameContainer gameContainer, Graphics graphics) throws SlickException {
-
+    public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         graphics.setAntiAlias(true);
         graphics.setColor(Color.white);
         graphics.fillRect(0, 0, gameContainer.getWidth(), gameContainer.getHeight());
@@ -59,6 +58,10 @@ public class LDGame extends BasicGame {
         Hexagon hex = new Hexagon(5, 5, 20);
         hex.setFillColor(logic.getCurrentPlayer().getCurrentElement().getColor());
         hex.draw(graphics);
+    }
+
+    @Override
+    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
     }
 
     @Override

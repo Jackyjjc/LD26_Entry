@@ -43,6 +43,6 @@ public class Player {
 
     public void getNewElement() {
         //TODO: generate element based on some sort of rule
-        currentElement = Element.values()[0];
+        currentElement = Element.values()[((int) (Math.random() * 5))];
     }
 }

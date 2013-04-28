@@ -5,8 +5,8 @@ package com.jackyjjc.ld26;
  */
 public class Utils {
 
-    private static final int X_OFFSET = 10;
-    private static final int Y_OFFSET = 10;
+    private static final int X_OFFSET = 2;
+    private static final int Y_OFFSET = 8;
 
     public static Point mousePosToMapPos(int mouseX, int mouseY) {
 

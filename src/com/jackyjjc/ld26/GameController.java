@@ -1,5 +1,7 @@
 package com.jackyjjc.ld26;
 
+import java.util.List;
+
 /**
  * @author Junjie CHEN(jacky.jjchen@gmail.com)
  */
@@ -24,7 +26,11 @@ public class GameController {
         System.out.println("User Place Element");
 
         //get all the adjacent cells
-        map.getSurroundingCell(cell.getX(), cell.getY());
+        List<HexCell> cells = map.getSurroundingCell(cell.getX(), cell.getY());
+
+        //check if there is an opposite element
+
+
 
         if(cell.getOwner() == null) {
             cell.setOwner(currentPlayer);
@@ -62,6 +68,8 @@ public class GameController {
 
         if(cell.getOwner() == null || cell.getOwner() == currentPlayer) {
             legal = true;
+        } else {
+            System.out.println("It is not a legal move because owner is " + cell.getOwner());
         }
 
         return legal;

@@ -47,29 +47,27 @@ public class HexCell {
         hexagon.draw(g);
     }
 
-    public Color getColor() {
+    public GameColor getColor() {
 
-        float red = 0;
-        float green = 0;
-        float blue = 0;
+        float c = 0;
+        float m = 0;
+        float y = 0;
+        float k = 0;
 
         double total = 0;
         for(Element element : Element.values()) {
             total += proportionMap[element.getId()];
         }
 
-        if(total == 0) {
-            return Color.white;
-        }
-
         for(Element element : Element.values()) {
-            double portion = proportionMap[element.getId()] / total;
-            red += element.getColor().getRed() * portion;
-            green += element.getColor().getGreen() * portion;
-            blue += element.getColor().getBlue() * portion;
+            double portion = (total == 0) ? 0 : proportionMap[element.getId()] / total;
+            c += element.getColor().c * portion;
+            m += element.getColor().m * portion;
+            y += element.getColor().y * portion;
+            k += element.getColor().k * portion;
         }
 
-        return new Color(red, green, blue);
+        return new GameColor(c, m, y, k);
     }
 
     public void addElement(Element element) {

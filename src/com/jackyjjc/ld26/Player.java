@@ -10,18 +10,18 @@ import java.util.List;
  */
 public class Player {
 
-    private Color color;
+    private GameColor color;
     private List<HexCell> cells;
 
     private Element currentElement;
 
-    public Player(Color color) {
+    public Player(GameColor color) {
         this.color = color;
         this.cells = new ArrayList<HexCell>();
         getNewElement();
     }
 
-    public Color getColor() {
+    public GameColor getColor() {
         return color;
     }
 

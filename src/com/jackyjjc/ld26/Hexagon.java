@@ -9,16 +9,16 @@ import org.newdawn.slick.geom.Polygon;
  */
 public class Hexagon {
 
-    private Color fillColor;
-    private Color lineColor;
+    private GameColor fillGameColor;
+    private GameColor lineGameColor;
     private int lineThickness;
 
     private Polygon shape;
 
     public Hexagon(int x, int y, int sideLength) {
 
-        this.fillColor = Color.white;
-        this.lineColor = Color.black;
+        this.fillGameColor = GameColor.fromRGB(Color.white);
+        this.lineGameColor = GameColor.fromRGB(Color.black);
         this.lineThickness = 3;
 
         float c = sideLength;
@@ -37,11 +37,11 @@ public class Hexagon {
 
     public void draw(Graphics g) {
 
-        g.setColor(fillColor);
+        g.setColor(fillGameColor.toRGB());
         g.fill(shape);
 
         g.setLineWidth(lineThickness);
-        g.setColor(lineColor);
+        g.setColor(lineGameColor.toRGB());
         g.draw(shape);
     }
 
@@ -50,12 +50,12 @@ public class Hexagon {
     }
 
     /* Boring Setters */
-    public void setFillColor(Color fillColor) {
-        this.fillColor = fillColor;
+    public void setFillColor(GameColor fillGameColor) {
+        this.fillGameColor = fillGameColor;
     }
 
-    public void setLineColor(Color lineColor) {
-        this.lineColor = lineColor;
+    public void setLineColor(GameColor lineGameColor) {
+        this.lineGameColor = lineGameColor;
     }
 
     public void setLineThickness(int lineThickness) {

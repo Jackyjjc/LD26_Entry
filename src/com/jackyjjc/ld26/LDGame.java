@@ -23,8 +23,8 @@ public class LDGame extends BasicGame {
     public void init(GameContainer gameContainer) throws SlickException {
 
         players = new Player[NUM_PLAYERS];
-        players[0] = new Player(Color.magenta);
-        players[1] = new Player(Color.cyan);
+        players[0] = new Player(GameColor.fromRGB(Color.magenta));
+        players[1] = new Player(GameColor.fromRGB(Color.cyan));
 
         this.map = new GameMap();
         this.logic = new GameController(players, map);
@@ -67,12 +67,19 @@ public class LDGame extends BasicGame {
 
             Point mapPos = Utils.mousePosToMapPos(x, y);
             if(!map.withinMap(mapPos.x, mapPos.y)) {
+                System.out.println(mapPos.x + "," + mapPos.y + " not within valid range");
                 return;
             }
 
             HexCell clickedCell = null;
 
+            HexCell currentCell = map.getCell(mapPos.x, mapPos.y);
+
             List<HexCell> cells = map.getSurroundingCell(mapPos.x, mapPos.y);
+            if(currentCell != null) {
+                cells.add(currentCell);
+            }
+
             for (HexCell cell : cells) {
                 if(cell.contains(x, y)) {
                     clickedCell = cell;
@@ -84,6 +91,8 @@ public class LDGame extends BasicGame {
                     logic.PlaceElement(clickedCell);
                     logic.nextTurn();
                 }
+            } else {
+                System.out.println("Clicked Cell is null");
             }
         }
     }

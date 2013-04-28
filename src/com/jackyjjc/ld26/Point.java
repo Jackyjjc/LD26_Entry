@@ -14,7 +14,7 @@ public class Point {
     public final int x;
     public final int y;
 
-    private Point(int x, int y) {
+    public Point(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -56,7 +56,7 @@ public class Point {
 
     private static int hash(int x, int y) {
         int result = x;
-        result = 31 * result + y;
+        result = 179426239 * result + y;
         return result;
     }
 }

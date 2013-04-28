@@ -23,8 +23,6 @@ public class GameMap {
 
     private HexCell[][] map;
 
-    private Player player;
-
     public GameMap() {
 
         background = new Hexagon[BG_HEIGHT][BG_WIDTH];
@@ -43,8 +41,17 @@ public class GameMap {
                 map[row][col] = new HexCell(col, row);
             }
         }
+    }
 
-        player = new Player(Color.orange);
+    public HexCell getCell(int col, int row) {
+
+        HexCell cell = null;
+
+        if(withinMap(col, row)) {
+            cell = map[row][col];
+        }
+
+        return cell;
     }
 
     public List<HexCell> getSurroundingCell(int col, int row) {

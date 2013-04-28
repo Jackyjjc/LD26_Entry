@@ -3,6 +3,8 @@ package com.jackyjjc.ld26;
 import org.newdawn.slick.Color;
 
 /**
+ * The five basic elements that forms everything based on ancient chinese mythology
+ *
  * @author Junjie CHEN(jacky.jjchen@gmail.com)
  */
 public enum Element {

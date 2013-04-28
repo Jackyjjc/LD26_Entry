@@ -2,7 +2,8 @@ package com.jackyjjc.ld26;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.geom.Polygon;
+
+import java.util.List;
 
 /**
  * @author Junjie CHEN(jacky.jjchen@gmail.com)
@@ -10,43 +11,40 @@ import org.newdawn.slick.geom.Polygon;
 public class HexCell {
 
     public static final int SIDE_LENGTH = 30;
-    public static final int HEIGHT = 52;
+    public static final int WIDTH = 49;
+    public static final int HEIGHT = 56;
 
     private int x;
     private int y;
 
-    private Polygon shape;
-    private double[] proportionMap;
+    private Hexagon hexagon;
+
+    private Player owner;
+    private int[] proportionMap;
 
     public HexCell(int x, int y) {
 
         this.x = x;
         this.y = y;
 
-        float c = SIDE_LENGTH;
-        float a = c / 2;
-        float b = (float) (Math.sin(Math.toRadians(60)) * c);
+        Point mousePos = Utils.mapPosToMousePos(x, y);
 
-        float[] points = new float[] {0 + x, b + y,
-                                      a + x, 0 + y,
-                                      a + c + x, y,
-                                      2 * c + x, b + y,
-                                      a + c + x, 2 * b + y,
-                                      a + x, 2 * b + y};
+        this.hexagon = new Hexagon(mousePos.x, mousePos.y, SIDE_LENGTH);
 
-        shape = new Polygon(points);
-        proportionMap = new double[Element.values().length];
+        this.owner = null;
+
+        proportionMap = new int[Element.values().length];
         for(Element element : Element.values()) {
             proportionMap[element.getId()] = 0;
         }
     }
 
     public void draw(Graphics g) {
-        g.setLineWidth(3);
-        g.setColor(getColor());
-        g.fill(shape);
-        g.setColor(Color.black);
-        g.draw(shape);
+        hexagon.setFillColor(getColor());
+        if(owner != null) {
+            hexagon.setLineColor(owner.getColor());
+        }
+        hexagon.draw(g);
     }
 
     public Color getColor() {
@@ -55,31 +53,47 @@ public class HexCell {
         float green = 0;
         float blue = 0;
 
+        double total = 0;
         for(Element element : Element.values()) {
-            double portion = proportionMap[element.getId()];
+            total += proportionMap[element.getId()];
+        }
+
+        if(total == 0) {
+            return Color.white;
+        }
+
+        for(Element element : Element.values()) {
+            double portion = proportionMap[element.getId()] / total;
             red += element.getColor().getRed() * portion;
             green += element.getColor().getGreen() * portion;
             blue += element.getColor().getBlue() * portion;
         }
 
-        if(red + green + blue == 0) {
-            return Color.white;
-        }
-
         return new Color(red, green, blue);
     }
 
+    public void addElement(Element element) {
+        proportionMap[element.getId()]++;
+    }
+
     public boolean contains(int x, int y) {
-        return shape.contains(x, y);
+        return hexagon.contains(x, y);
     }
 
-    public void setElement(Element newElement) {
-
-        for(Element element : Element.values()) {
-            proportionMap[element.getId()] = 0;
-        }
-
-        proportionMap[newElement.getId()] = 100;
+    public int getX() {
+        return x;
     }
 
+    public int getY() {
+        return y;
+    }
+
+    public Player getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Player player) {
+        this.owner = player;
+        player.addCell(this);
+    }
 }

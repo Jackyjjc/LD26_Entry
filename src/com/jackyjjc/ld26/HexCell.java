@@ -1,8 +1,8 @@
 package com.jackyjjc.ld26;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,10 +54,7 @@ public class HexCell {
         float y = 0;
         float k = 0;
 
-        double total = 0;
-        for(Element element : Element.values()) {
-            total += proportionMap[element.getId()];
-        }
+        double total = getTotalElements();
 
         for(Element element : Element.values()) {
             double portion = (total == 0) ? 0 : proportionMap[element.getId()] / total;
@@ -70,8 +67,59 @@ public class HexCell {
         return new GameColor(c, m, y, k);
     }
 
+    public double getElementStrength(Element element) {
+        int strength = proportionMap[element.getId()];
+
+        if(strength > 0) {
+            strength += proportionMap[element.getMutualGeneratingElement().getId()] * 0.5;
+        }
+        return strength;
+    }
+
+    public void interact(HexCell other) {
+
+        List<Element> elementsToRemoveOnThis = new ArrayList<Element>();
+        List<Element> elementsToRemoveOnOther = new ArrayList<Element>();
+
+        for (Element element : Element.values()) {
+            Element mcElement = element.getMutualOvercomeElement();
+            if(this.getElementStrength(element) > other.getElementStrength(mcElement)) {
+                elementsToRemoveOnOther.add(mcElement);
+            } else {
+                elementsToRemoveOnThis.add(element);
+            }
+        }
+
+        this.removeElements(elementsToRemoveOnThis);
+        other.removeElements(elementsToRemoveOnOther);
+    }
+
+    public int getTotalElements() {
+        int total = 0;
+        for(Element element : Element.values()) {
+            total += proportionMap[element.getId()];
+        }
+        return total;
+    }
+
     public void addElement(Element element) {
         proportionMap[element.getId()]++;
+    }
+
+    public void reduceElement(Element element) {
+        if(proportionMap[element.getId()] > 0) {
+            proportionMap[element.getId()]--;
+        }
+    }
+
+    public void removeElements(List<Element> elements) {
+        for (Element element : elements) {
+            removeElement(element);
+        }
+    }
+
+    public void removeElement(Element element) {
+        proportionMap[element.getId()] = 0;
     }
 
     public boolean contains(int x, int y) {
@@ -91,7 +139,15 @@ public class HexCell {
     }
 
     public void setOwner(Player player) {
+
+        if(player == null && owner != null) {
+            owner.removeCell(this);
+        }
+
         this.owner = player;
-        player.addCell(this);
+
+        if(player != null) {
+            player.addCell(this);
+        }
     }
 }

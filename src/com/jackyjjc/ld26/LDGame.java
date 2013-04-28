@@ -57,6 +57,7 @@ public class LDGame extends BasicGame {
 
         //display the next element the user can use
         Hexagon hex = new Hexagon(5, 5, 20);
+        hex.setFillColor(logic.getCurrentPlayer().getCurrentElement().getColor());
         hex.draw(graphics);
     }
 

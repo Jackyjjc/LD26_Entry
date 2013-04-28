@@ -21,22 +21,26 @@ public class GameController {
         currentPlayer = players[0];
     }
 
-    public void PlaceElement(HexCell cell) {
+    public void PlaceElement(HexCell targetCell) {
 
         System.out.println("User Place Element");
 
+        Element currentElement = currentPlayer.getCurrentElement();
+        targetCell.addElement(currentElement);
+
         //get all the adjacent cells
-        List<HexCell> cells = map.getSurroundingCell(cell.getX(), cell.getY());
+        List<HexCell> cells = map.getSurroundingCell(targetCell.getX(), targetCell.getY());
 
-        //check if there is an opposite element
-
-
-
-        if(cell.getOwner() == null) {
-            cell.setOwner(currentPlayer);
+        for (HexCell cell : cells) {
+            targetCell.interact(cell);
+            if(cell.getTotalElements() == 0) {
+                cell.setOwner(null);
+            }
         }
-        cell.addElement(currentPlayer.getCurrentElement());
 
+        if(targetCell.getOwner() == null && targetCell.getTotalElements() > 0) {
+            targetCell.setOwner(currentPlayer);
+        }
     }
 
     /**
@@ -77,6 +81,10 @@ public class GameController {
 
     public boolean isFinished() {
         return false;
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
     }
 
 }

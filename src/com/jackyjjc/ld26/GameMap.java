@@ -1,6 +1,5 @@
 package com.jackyjjc.ld26;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import java.util.ArrayList;
@@ -58,17 +57,17 @@ public class GameMap {
 
         List<HexCell> cells = new ArrayList<HexCell>();
 
-        if(withinMap(col - 1, row)) cells.add(map[row][col]);
-        if(withinMap(col, row - 1)) cells.add(map[row][col]);
-        if(withinMap(col + 1, row)) cells.add(map[row][col]);
-        if(withinMap(col, row + 1)) cells.add(map[row][col]);
+        if(withinMap(col - 1, row)) cells.add(map[row][col - 1]);
+        if(withinMap(col, row - 1)) cells.add(map[row - 1][col]);
+        if(withinMap(col + 1, row)) cells.add(map[row][col + 1]);
+        if(withinMap(col, row + 1)) cells.add(map[row + 1][col]);
 
         if(col % 2 == 0) {
-            if(withinMap(col + 1, row + 1)) cells.add(map[row][col]);
-            if(withinMap(col - 1, row + 1)) cells.add(map[row][col]);
+            if(withinMap(col + 1, row + 1)) cells.add(map[row + 1][col + 1]);
+            if(withinMap(col - 1, row + 1)) cells.add(map[row + 1][col - 1]);
         } else {
-            if(withinMap(col + 1, row - 1)) cells.add(map[row][col]);
-            if(withinMap(col - 1, row - 1)) cells.add(map[row][col]);
+            if(withinMap(col + 1, row - 1)) cells.add(map[row - 1][col + 1]);
+            if(withinMap(col - 1, row - 1)) cells.add(map[row - 1][col - 1]);
         }
 
         return cells;

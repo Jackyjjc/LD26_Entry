@@ -1,7 +1,4 @@
 package com.jackyjjc.ld26;
-
-import org.newdawn.slick.Color;
-
 import java.util.ArrayList;
 import java.util.List;
 

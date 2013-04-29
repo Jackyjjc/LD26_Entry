@@ -19,6 +19,11 @@ public class GamePlayState extends BasicGameState {
     private GameController logic;
     private Player[] players;
 
+    private int tutorialSlide = 0;
+    private Image[] tutorial;
+
+    private boolean listenerAdded;
+
     public GamePlayState(int id) {
         this.id = id;
     }
@@ -30,6 +35,7 @@ public class GamePlayState extends BasicGameState {
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+
         players = new Player[NUM_PLAYERS];
         players[0] = new Player(GameColor.fromRGB(Color.magenta));
         players[1] = new Player(GameColor.fromRGB(Color.cyan));
@@ -37,11 +43,17 @@ public class GamePlayState extends BasicGameState {
         this.map = new GameMap();
         this.logic = new GameController(players, map);
 
-        gameContainer.getInput().addMouseListener(this);
+        gameContainer.getInput().removeMouseListener(this);
+        this.listenerAdded = false;
+
+        this.tutorial = new Image[2];
+        this.tutorial[0] = new Image("assets/helpScreen1.png");
+        this.tutorial[1] = new Image("assets/helpScreen.png");
     }
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
+
         graphics.setAntiAlias(true);
         graphics.setColor(Color.white);
         graphics.fillRect(0, 0, gameContainer.getWidth(), gameContainer.getHeight());
@@ -58,10 +70,23 @@ public class GamePlayState extends BasicGameState {
         Hexagon hex = new Hexagon(5, 5, 20);
         hex.setFillColor(logic.getCurrentPlayer().getCurrentElement().getColor());
         hex.draw(graphics);
+
+        if(tutorialSlide < tutorial.length) {
+            graphics.drawImage(tutorial[tutorialSlide], 101.5f, 119.5f);
+        }
     }
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
+        if(tutorialSlide >= tutorial.length && !listenerAdded) {
+            gameContainer.getInput().addMouseListener(this);
+        } else if(tutorialSlide < tutorial.length) {
+            if(gameContainer.getInput().isKeyPressed(Input.KEY_ENTER) || gameContainer.getInput().isKeyPressed(Input.KEY_SPACE)) {
+                tutorialSlide++;
+            }
+        } else if(tutorialSlide >= tutorial.length && listenerAdded) {
+
+        }
     }
 
     @Override

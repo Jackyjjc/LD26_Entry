@@ -9,11 +9,11 @@ import org.newdawn.slick.Color;
  */
 public enum Element {
 
-    METAL(GameColor.fromRGB(Color.yellow), 0),
-    WOOD(GameColor.fromRGB(new Color(127, 51, 0)), 1),
-    WATER(GameColor.fromRGB(Color.blue), 2),
-    FIRE(GameColor.fromRGB(Color.red), 3),
-    EARTH(GameColor.fromRGB(Color.green), 4);
+    METAL(GameColor.fromRGB(new Color(255, 205, 5)), 0),
+    WOOD(GameColor.fromRGB(new Color(178, 118, 15)), 1),
+    WATER(GameColor.fromRGB(new Color(15, 67, 227)), 2),
+    FIRE(GameColor.fromRGB(new Color(255, 5, 5)), 3),
+    EARTH(GameColor.fromRGB(new Color(9, 154, 5)), 4);
 
     private GameColor color;
     private int id;
